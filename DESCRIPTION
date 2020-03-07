@@ -1,0 +1,27 @@
+Package: canmap
+Title: Standard Canadian geography shapefiles.
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Jesse",
+           family = "Tweedle",
+           role = c("aut", "cre"),
+           email = "jesse.tweedle@gmail.com",
+           comment = c(ORCID = "YOUR-ORCID-ID"))
+Description: What the package does (one paragraph).
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Imports: 
+    here,
+    fs,
+    stringr,
+    utils,
+    magrittr,
+    dplyr,
+    tidyr
+RoxygenNote: 7.0.2
+Suggests: 
+    knitr,
+    rmarkdown,
+    sf
+VignetteBuilder: knitr

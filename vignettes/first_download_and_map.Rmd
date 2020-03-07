@@ -1,0 +1,46 @@
+---
+title: "first_download_and_map"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{first_download_and_map}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(canmap)
+library(dplyr)
+library(sf)
+
+default_format <- "ArcGIS (.shp)"
+default_language <- "english"
+default_geo_code <- "pr_"
+default_file_type <- "digital boundary file"
+default_ref_date <- "2016"
+default_projection <- "projection in Lambert conformal conic"
+
+default_shp <- shapefile_info %>%
+  select(-size) %>% 
+  filter(geo_code == default_geo_code &
+           file_type == default_file_type &
+           format == default_format &
+           language == default_language &
+           ref_date == default_ref_date &
+           projection == default_projection) %>% 
+  distinct()
+
+shp_path <- download_geography(default_shp %>% pull(path) %>% unique())
+
+shp_path
+
+pr <- read_sf(shp_path)
+
+pr
+```
