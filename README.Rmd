@@ -35,7 +35,9 @@ library(canmap)
 
 tibble::as_tibble(shapefile_info)
 
-# then pick the shapefile you'd like:
+# then pick a shapefile and get the link:
+shapefile_info %>% 
+  select(filepath, path)
 
 ```
 

@@ -1,26 +1,28 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# mapcan
+# canmap
 
 <!-- badges: start -->
 
 <!-- badges: end -->
 
-The goal of mapcan is to …
+`canmap` provides easy access to standard Canadian geographic
+shapefiles, as well as the associated metadata that helps pick which one
+you’d like.
 
 ## Installation
 
-You can install the released version of `mapcan` with:
+You can install the development version of `canmap` with:
 
 ``` r
-remotes::install_github("tweed1e/mapcan")
+remotes::install_github("tweed1e/canmap")
 ```
 
 ## Example
 
 ``` r
-library(mapcan)
+library(canmap)
 
 tibble::as_tibble(shapefile_info)
 #> # A tibble: 88 x 13
@@ -38,8 +40,10 @@ tibble::as_tibble(shapefile_info)
 #> 10 gdpl000… zip   file  2.98M http…     2016 dpl      designat… cartogra… ArcGI…
 #> # … with 78 more rows, and 3 more variables: projection <chr>,
 #> #   geo_coverage <chr>, language <chr>
+
+# then pick the shapefile you'd like:
 ```
 
-Please note that the ‘mapcan’ project is released with a [Contributor
+Please note that the ‘canmap’ project is released with a [Contributor
 Code of Conduct](.github/CODE_OF_CONDUCT.md). By contributing to this
 project, you agree to abide by its terms.
