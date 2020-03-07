@@ -41,7 +41,12 @@ tibble::as_tibble(shapefile_info)
 #> # … with 78 more rows, and 3 more variables: projection <chr>,
 #> #   geo_coverage <chr>, language <chr>
 
-# then pick the shapefile you'd like:
+# then pick a shapefile and get the link:
+shapefile_info[1, c("filepath", "path")]
+#> # A tibble: 1 x 2
+#>   filepath      path                                                            
+#>   <chr>         <chr>                                                           
+#> 1 gada000b16a_e http://www12.statcan.gc.ca/census-recensement/2011/geo/bound-li…
 ```
 
 Please note that the ‘canmap’ project is released with a [Contributor
