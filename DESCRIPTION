@@ -1,5 +1,5 @@
 Package: canmap
-Title: Standard Canadian geography shapefiles.
+Title: Standard Canadian geography shapefiles
 Version: 0.0.0.9000
 Authors@R: 
     person(given = "Jesse",
@@ -11,6 +11,7 @@ Description: What the package does (one paragraph).
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
+Depends: R (>= 3.4)
 Imports: 
     here,
     fs,
@@ -23,5 +24,6 @@ RoxygenNote: 7.0.2
 Suggests: 
     knitr,
     rmarkdown,
-    sf
+    sf,
+    testthat (>= 2.1.0)
 VignetteBuilder: knitr

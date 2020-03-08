@@ -4,22 +4,23 @@ library(usethis)
 library(httr) # for later.
 
 
-shapefile_info <- readr::read_csv("data-raw/shapefile_info.csv")
+# shapefile_info <- readr::read_csv("data-raw/shapefile_info.csv")
+shapefile_paths <- readr::read_csv("data-raw/shapefile_paths.csv")
 
 base_url_1 <- "http://www12.statcan.gc.ca/census-recensement/"
 base_url_2 <- "/geo/bound-limit/files-fichiers/"
 
 
-shapefile_info %>% count(geo_code)
+shapefile_paths %>% count(geo_code)
 # only get shapefiles
-shapefile_info <- shapefile_info %>%
+shapefile_paths <- shapefile_paths %>%
   filter(format == "ArcGIS (.shp)" & language == "english" & geo_code != "rnf") %>%
   dplyr::mutate(path = stringr::str_c(base_url_1,
                       "2011", # idk why they have 2011 in the url for every year?
                       base_url_2,
                       ref_date,
                       "/",
-                      filepath, ".", ext)) %>%
+                      filepath, ".zip")) %>%
     filter(!is.na(file_type) & !is.na(path))
 
 ######
@@ -27,7 +28,7 @@ shapefile_info <- shapefile_info %>%
 ######
 # httr::
 
-si <- shapefile_info %>%
+si <- shapefile_paths %>%
   distinct() %>%
   # select(path) %>%
   # slice(1:100) %>%
@@ -40,11 +41,9 @@ si %>% count(http_type)
 
 si <- si %>% filter(http_type == "application/x-zip-compressed")
 
-shapefile_info <- shapefile_info %>% semi_join(si, by = "path")
+shapefile_paths <- shapefile_paths %>% semi_join(si, by = "path")
 
-shapefile_info <- shapefile_info %>% distinct()
-
-usethis::use_data(shapefile_info, overwrite = TRUE)
+usethis::use_data(shapefile_paths, overwrite = TRUE)
 
 # x <- fs::dir_info("//fld6filer/fichiersGEOfiles/Geographie_2016_Geography/Spatial_Info_Products-Produits_d'info_spatiale", recursive = TRUE) %>%
 #   mutate(ext = fs::path_ext(path),
@@ -70,10 +69,11 @@ usethis::use_data(shapefile_info, overwrite = TRUE)
 
 ############# and code info
 
-code_book <- readr::read_csv("data-raw/code_book.csv")
-usethis::use_data(code_book, internal = TRUE, overwrite = TRUE)
+code_book_ <- readr::read_csv("data-raw/code_book.csv")
+code_book <- dplyr::select(code_book_, -start_chr, -stop_chr, -long_desc)
+usethis::use_data(code_book, internal = FALSE, overwrite = TRUE)
 
  # save this as well.
-code_pos <- code_book %>%
+code_pos <- code_book_ %>%
   dplyr::distinct(code_type, start_chr, stop_chr)
-usethis::use_data(code_pos, internal = TRUE, overwrite = TRUE)
+usethis::use_data(code_pos, internal = FALSE, overwrite = TRUE)

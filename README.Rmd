@@ -33,10 +33,10 @@ remotes::install_github("tweed1e/canmap")
 ```{r example}
 library(canmap)
 
-tibble::as_tibble(shapefile_info)
+tibble::as_tibble(shapefile_paths)
 
 # then pick a shapefile and get the link:
-shapefile_info[1, c("filepath", "path")]
+shapefile_paths[1, c("filepath", "path")]
 ```
 
 

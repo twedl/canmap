@@ -1,5 +1,5 @@
 ---
-title: "first_download_and_map"
+title: "Download and map a shapefile"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{first_download_and_map}
@@ -26,7 +26,7 @@ default_file_type <- "digital boundary file"
 default_ref_date <- "2016"
 default_projection <- "projection in Lambert conformal conic"
 
-default_shp <- shapefile_info %>%
+default_shp <- shapefile_paths %>%
   select(-size) %>% 
   filter(geo_code == default_geo_code &
            file_type == default_file_type &
@@ -36,11 +36,8 @@ default_shp <- shapefile_info %>%
            projection == default_projection) %>% 
   distinct()
 
-shp_path <- download_geography(default_shp %>% pull(path) %>% unique())
+# shp_path <- download_geography(default_shp %>% pull(path))
 
-shp_path
+# pr <- read_sf(shp_path)
 
-pr <- read_sf(shp_path)
-
-pr
 ```
