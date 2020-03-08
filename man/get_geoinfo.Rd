@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{get_geoinfo}
 \alias{get_geoinfo}
-\title{Get metadata associated with geographic filename.}
+\title{Get metadata associated with geographic filename}
 \usage{
 get_geoinfo(filename)
 }
@@ -14,7 +14,7 @@ A one-row tibble of metadata associated with the filename
 of Statistics Canada's shapefiles.
 }
 \description{
-Get metadata associated with geographic filename.
+Get metadata associated with geographic filename
 }
 \examples{
 \donttest{
