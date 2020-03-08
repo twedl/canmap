@@ -61,9 +61,9 @@ download_geography <- function(geo_path, geo_dir = NULL) {
 #'
 #' @examples
 #' \donttest{
-#' get_geoinfo("lpr_000a16a_e")
+#' geoinfo("lpr_000a16a_e")
 #' }
-get_geoinfo <- function(filename) {
+geoinfo <- function(filename) {
 
   extract_codes <- canmap::code_pos
 
@@ -88,7 +88,6 @@ get_geoinfo <- function(filename) {
 
   dplyr::select(code_descriptions, .data$filename, .data$ref_date,
                 .data$geo_code, .data$geo_level, .data$file_type,
-                .data$format, .data$projection, .data$geo_coverage,
-                .data$language)
+                .data$format, .data$projection, .data$language)
 
 }
