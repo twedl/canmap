@@ -6,7 +6,7 @@ Authors@R:
            family = "Tweedle",
            role = c("aut", "cre"),
            email = "jesse.tweedle@gmail.com",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
+           comment = "")
 Description: What the package does (one paragraph).
 License: MIT + file LICENSE
 Encoding: UTF-8
@@ -17,7 +17,6 @@ Imports:
     fs,
     stringr,
     utils,
-    magrittr,
     dplyr,
     tidyr
 RoxygenNote: 7.0.2
