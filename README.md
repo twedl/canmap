@@ -169,7 +169,7 @@ And others probably\!
 [openstreetmap](https://cran.r-project.org/web/packages/OpenStreetMap/index.html)
 and [osmdata](https://github.com/ropensci/osmdata) and
 [leaflet](https://cran.r-project.org/web/packages/leaflet/index.html)
-are both useful as well.
+are all useful as well.
 
 Please note that the ‘canmap’ project is released with a [Contributor
 Code of Conduct](.github/CODE_OF_CONDUCT.md). By contributing to this
