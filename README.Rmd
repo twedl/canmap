@@ -37,19 +37,16 @@ remotes::install_gitlab("tweejes/canmap", host = "gitlab.statcan.ca")
 
 
 ```{r example}
-
-library(tidyverse)
 library(canmap)
 
-default_shp <- shapefile_paths %>%
-  filter(
-    geo_code == "pr_" &
-    file_type == "digital boundary file" &
-    format == "ArcGIS (.shp)" &
-    language == "english"  &
-    ref_date == 2016 &
-    projection == "projection in Lambert conformal conic"
-  )
+default_shp <- dplyr::filter(shapefile_paths,
+                  geo_code == "pr_" &
+                  file_type == "digital boundary file" &
+                  format == "ArcGIS (.shp)" &
+                  language == "english"  &
+                  ref_date == 2016 &
+                  projection == "projection in Lambert conformal conic"
+                )
 
 default_shp
 
@@ -66,6 +63,8 @@ provinces <- sf::read_sf(shp_path)
 Then input into ggplot + sf:
 
 ``` {r fig.retina = 2}
+library(ggplot2)
+
 ggplot() +
   geom_sf(data = provinces) +
   labs(title = "Provinces & Territories / Digital Boundary File", 
