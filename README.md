@@ -22,7 +22,7 @@ remotes::install_github("tweed1e/canmap")
 And you can install the internal development version of `canmap` with:
 
 ``` r
-remotes::install_gitlab("tweejes/canmap", host = "gitlab.statcan.ca)
+remotes::install_gitlab("tweejes/canmap", host = "gitlab.statcan.ca")
 ```
 
 ## Example
