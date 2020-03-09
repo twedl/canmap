@@ -57,10 +57,10 @@ default_shp
 (url <- default_shp[1, ]$path)
 
 # then you can download it yourself, or use download_geography(url)
+shp_path <- download_geography(url)
 
-(shp_path <- download_geography(url))
-
-(provinces <- sf::read_sf(shp_path))
+# and use sf to read the shapefile.
+provinces <- sf::read_sf(shp_path)
 ```
 
 Then input into ggplot + sf:
@@ -70,8 +70,7 @@ ggplot() +
   geom_sf(data = provinces) +
   labs(title = "Provinces & Territories / Digital Boundary File", 
        x = "Longitude", y = "Latitude",
-       caption = paste0("Source:\n", url))
-
+       caption = paste0(".zip source name: ", default_shp$filepath, ".zip"))
 ```
 
 
@@ -114,7 +113,15 @@ Business data usually isn't released below the economic region level (```er_```)
 English and french maps are in different files, so they have different codes: ```lpr_000a16a_e.zip``` has the english province/territory maps and ```lpr_000a16a_f.zip``` has the french province/territory maps. The only difference, AFAIK, is that the guide and geography names are in french in the french version.
 
 
-## Notes
+## Notes & Other Packages
+
+There are some other great packages to make Canadian maps!
+
+- [cancensus](https://github.com/mountainMath/cancensus) (R package available from CRAN + github)
+- [censusmapper.ca](censusmapper.ca) (from the same ppl as ^, but a website)
+- [rcanvec](https://github.com/paleolimbot/rcanvec) (V cool NTS maps, good for small scales)
+
+And others probably! [openstreetmap](https://cran.r-project.org/web/packages/OpenStreetMap/index.html) and [osmdata](https://github.com/ropensci/osmdata) and [leaflet](https://cran.r-project.org/web/packages/leaflet/index.html) are both useful as well.
 
 Please note that the 'canmap' project is released with a
 [Contributor Code of Conduct](.github/CODE_OF_CONDUCT.md).

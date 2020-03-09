@@ -63,34 +63,10 @@ default_shp
 #> [1] "http://www12.statcan.gc.ca/census-recensement/2011/geo/bound-limit/files-fichiers/2016/lpr_000a16a_e.zip"
 
 # then you can download it yourself, or use download_geography(url)
+shp_path <- download_geography(url)
 
-(shp_path <- download_geography(url))
-#> lpr_000a16a_e.zip already downloaded, returning filepath to unzipped .shp.
-#> [1] "/Users/jessetweedle/Documents/github/canmap/geography/lpr_000a16a_e/lpr_000a16a_e.shp"
-
-(provinces <- sf::read_sf(shp_path))
-#> Simple feature collection with 13 features and 6 fields
-#> geometry type:  MULTIPOLYGON
-#> dimension:      XY
-#> bbox:           xmin: 3658201 ymin: 658873 xmax: 9019157 ymax: 6083005
-#> epsg (SRID):    3347
-#> proj4string:    +proj=lcc +lat_1=49 +lat_2=77 +lat_0=63.390675 +lon_0=-91.86666666666666 +x_0=6200000 +y_0=3000000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs
-#> # A tibble: 13 x 7
-#>    PRUID PRNAME    PRENAME  PRFNAME  PREABBR PRFABBR                    geometry
-#>    <chr> <chr>     <chr>    <chr>    <chr>   <chr>            <MULTIPOLYGON [m]>
-#>  1 10    Newfound… Newfoun… Terre-N… N.L.    T.-N.-… (((7644465 2980078, 764886…
-#>  2 11    Prince E… Prince … Île-du-… P.E.I.  Î.-P.-… (((8427185 1638777, 842717…
-#>  3 12    Nova Sco… Nova Sc… Nouvell… N.S.    N.-É.   (((8525489 1790548, 852563…
-#>  4 13    New Brun… New Bru… Nouveau… N.B.    N.-B.   (((8188458 1707920, 818844…
-#>  5 24    Quebec /… Quebec   Québec   Que.    Qc      (((7143607 3010209, 714985…
-#>  6 35    Ontario   Ontario  Ontario  Ont.    Ont.    (((6378816 2295412, 637874…
-#>  7 46    Manitoba  Manitoba Manitoba Man.    Man.    (((6039657 2636304, 603962…
-#>  8 47    Saskatch… Saskatc… Saskatc… Sask.   Sask.   (((5248634 2767057, 524928…
-#>  9 48    Alberta   Alberta  Alberta  Alta.   Alb.    (((5228304 2767598, 522809…
-#> 10 59    British … British… Colombi… B.C.    C.-B.   (((4018904 3410247, 401943…
-#> 11 60    Yukon     Yukon    Yukon    Y.T.    Yn      (((4561932 4312865, 456400…
-#> 12 61    Northwes… Northwe… Territo… N.W.T.  T.N.-O. (((5689672 4324508, 568549…
-#> 13 62    Nunavut   Nunavut  Nunavut  Nvt.    Nt      (((7297737 3983558, 731665…
+# and use sf to read the shapefile.
+provinces <- sf::read_sf(shp_path)
 ```
 
 Then input into ggplot + sf:
@@ -100,7 +76,7 @@ ggplot() +
   geom_sf(data = provinces) +
   labs(title = "Provinces & Territories / Digital Boundary File", 
        x = "Longitude", y = "Latitude",
-       caption = paste0("Source: ", url))
+       caption = paste0(".zip source name: ", default_shp$filepath, ".zip"))
 ```
 
 <img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
@@ -187,7 +163,22 @@ codes: `lpr_000a16a_e.zip` has the english province/territory maps and
 difference, AFAIK, is that the guide and geography names are in french
 in the french version.
 
-## Notes
+## Notes & Other Packages
+
+There are some other great packages to make Canadian maps\!
+
+  - [cancensus](https://github.com/mountainMath/cancensus) (R package
+    available from CRAN + github)
+  - [censusmapper.ca](censusmapper.ca) (from the same ppl as ^, but a
+    website)
+  - [rcanvec](https://github.com/paleolimbot/rcanvec) (V cool NTS maps,
+    good for small scales)
+
+And others probably\!
+[openstreetmap](https://cran.r-project.org/web/packages/OpenStreetMap/index.html)
+and [osmdata](https://github.com/ropensci/osmdata) and
+[leaflet](https://cran.r-project.org/web/packages/leaflet/index.html)
+are both useful as well.
 
 Please note that the ‘canmap’ project is released with a [Contributor
 Code of Conduct](.github/CODE_OF_CONDUCT.md). By contributing to this
