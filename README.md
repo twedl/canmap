@@ -9,7 +9,8 @@
 
 `canmap` provides easy access to standard Canadian geographic
 shapefiles, as well as the associated metadata that helps pick which one
-you’d like.
+you’d like. It’s named after mapbox, but instead of a box it’s a can.
+Except mapcan was already taken on CRAN.
 
 ## Installation
 
@@ -28,30 +29,81 @@ remotes::install_gitlab("tweejes/canmap", host = "gitlab.statcan.ca")
 ## Example
 
 ``` r
+
+library(tidyverse)
+#> ── Attaching packages ──────────────────────────────────────────────────────────── tidyverse 1.3.0 ──
+#> ✓ ggplot2 3.3.0     ✓ purrr   0.3.3
+#> ✓ tibble  2.1.3     ✓ dplyr   0.8.4
+#> ✓ tidyr   1.0.2     ✓ stringr 1.4.0
+#> ✓ readr   1.3.1     ✓ forcats 0.5.0
+#> ── Conflicts ─────────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+#> x dplyr::filter() masks stats::filter()
+#> x dplyr::lag()    masks stats::lag()
 library(canmap)
 
-tibble::as_tibble(shapefile_paths)
-#> # A tibble: 34 x 10
-#>    filepath size  path  ref_date geo_code geo_level file_type format projection
-#>    <chr>    <chr> <chr>    <dbl> <chr>    <chr>     <chr>     <chr>  <chr>     
-#>  1 lada000… 41.4… http…     2016 ada      aggregat… cartogra… ArcGI… projectio…
-#>  2 lcar000… 29.5… http…     2016 car      census a… cartogra… ArcGI… projectio…
-#>  3 lccs000… 41.3… http…     2016 ccs      census c… cartogra… ArcGI… projectio…
-#>  4 lcd_000… 31.5… http…     2016 cd_      census d… cartogra… ArcGI… projectio…
-#>  5 lcma000… 3.53M http…     2016 cma      census m… cartogra… ArcGI… projectio…
-#>  6 lcsd000… 46.6… http…     2016 csd      census s… cartogra… ArcGI… projectio…
-#>  7 lct_000… 8.05M http…     2016 ct_      census t… cartogra… ArcGI… projectio…
-#>  8 lda_000… 88.3M http…     2016 da_      dissemin… cartogra… ArcGI… projectio…
-#>  9 ldb_000… 231.… http…     2016 db_      dissemin… cartogra… ArcGI… projectio…
-#> 10 ldpl000… 2.27M http…     2016 dpl      designat… cartogra… ArcGI… projectio…
-#> # … with 24 more rows, and 1 more variable: language <chr>
+default_shp <- shapefile_paths %>%
+  filter(
+    geo_code == "pr_" &
+    file_type == "digital boundary file" &
+    format == "ArcGIS (.shp)" &
+    language == "english"  &
+    ref_date == 2016 &
+    projection == "projection in Lambert conformal conic"
+  )
+
+default_shp
+#> # A tibble: 1 x 10
+#>   filepath size  path  ref_date geo_code geo_level file_type format projection
+#>   <chr>    <chr> <chr>    <dbl> <chr>    <chr>     <chr>     <chr>  <chr>     
+#> 1 lpr_000… 1.31M http…     2016 pr_      province… digital … ArcGI… projectio…
+#> # … with 1 more variable: language <chr>
 
 # then pick a shapefile and get the link:
-(url <- shapefile_paths[1, ]$path)
-#> [1] "http://www12.statcan.gc.ca/census-recensement/2011/geo/bound-limit/files-fichiers/2016/lada000b16a_e.zip"
+(url <- default_shp[1, ]$path)
+#> [1] "http://www12.statcan.gc.ca/census-recensement/2011/geo/bound-limit/files-fichiers/2016/lpr_000a16a_e.zip"
 
 # then you can download it yourself, or use download_geography(url)
+
+(shp_path <- download_geography(url))
+#> lpr_000a16a_e.zip already downloaded, returning filepath to unzipped .shp.
+#> [1] "/Users/jessetweedle/Documents/github/canmap/geography/lpr_000a16a_e/lpr_000a16a_e.shp"
+
+(provinces <- sf::read_sf(shp_path))
+#> Simple feature collection with 13 features and 6 fields
+#> geometry type:  MULTIPOLYGON
+#> dimension:      XY
+#> bbox:           xmin: 3658201 ymin: 658873 xmax: 9019157 ymax: 6083005
+#> epsg (SRID):    3347
+#> proj4string:    +proj=lcc +lat_1=49 +lat_2=77 +lat_0=63.390675 +lon_0=-91.86666666666666 +x_0=6200000 +y_0=3000000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs
+#> # A tibble: 13 x 7
+#>    PRUID PRNAME    PRENAME  PRFNAME  PREABBR PRFABBR                    geometry
+#>    <chr> <chr>     <chr>    <chr>    <chr>   <chr>            <MULTIPOLYGON [m]>
+#>  1 10    Newfound… Newfoun… Terre-N… N.L.    T.-N.-… (((7644465 2980078, 764886…
+#>  2 11    Prince E… Prince … Île-du-… P.E.I.  Î.-P.-… (((8427185 1638777, 842717…
+#>  3 12    Nova Sco… Nova Sc… Nouvell… N.S.    N.-É.   (((8525489 1790548, 852563…
+#>  4 13    New Brun… New Bru… Nouveau… N.B.    N.-B.   (((8188458 1707920, 818844…
+#>  5 24    Quebec /… Quebec   Québec   Que.    Qc      (((7143607 3010209, 714985…
+#>  6 35    Ontario   Ontario  Ontario  Ont.    Ont.    (((6378816 2295412, 637874…
+#>  7 46    Manitoba  Manitoba Manitoba Man.    Man.    (((6039657 2636304, 603962…
+#>  8 47    Saskatch… Saskatc… Saskatc… Sask.   Sask.   (((5248634 2767057, 524928…
+#>  9 48    Alberta   Alberta  Alberta  Alta.   Alb.    (((5228304 2767598, 522809…
+#> 10 59    British … British… Colombi… B.C.    C.-B.   (((4018904 3410247, 401943…
+#> 11 60    Yukon     Yukon    Yukon    Y.T.    Yn      (((4561932 4312865, 456400…
+#> 12 61    Northwes… Northwe… Territo… N.W.T.  T.N.-O. (((5689672 4324508, 568549…
+#> 13 62    Nunavut   Nunavut  Nunavut  Nvt.    Nt      (((7297737 3983558, 731665…
 ```
+
+Then input into ggplot + sf:
+
+``` r
+ggplot() +
+  geom_sf(data = provinces) +
+  labs(title = "Provinces & Territories / Digital Boundary File", 
+       x = "Longitude", y = "Latitude",
+       caption = paste0("Source: ", url))
+```
+
+<img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
 
 ## Documentation
 
@@ -129,18 +181,11 @@ Business data usually isn’t released below the economic region level
 (`er_`), while census data can go down to census tract (`ct_`),
 dissemination area (`da_`) or dissemination block (`db_`).
 
-These are english codes, while the french codes are also in the
-dataset—english and french maps are in different files, so they have
-different codes: `lpr_000a16a_e.zip` has the english province/territory
-maps and `lpr_000a16a_f.zip` has the french province/territory maps. The
-only difference, AFAIK, is that the guide and geography names are in
-french in the french version.
-
-## Download and extract shapefiles to `./geography/`
-
-``` r
-download_geography(url)
-```
+English and french maps are in different files, so they have different
+codes: `lpr_000a16a_e.zip` has the english province/territory maps and
+`lpr_000a16a_f.zip` has the french province/territory maps. The only
+difference, AFAIK, is that the guide and geography names are in french
+in the french version.
 
 ## Notes
 

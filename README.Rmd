@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-```canmap``` provides easy access to standard Canadian geographic shapefiles, as well as the associated metadata that helps pick which one you'd like.
+```canmap``` provides easy access to standard Canadian geographic shapefiles, as well as the associated metadata that helps pick which one you'd like. It's named after mapbox, but instead of a box it's a can. Except mapcan was already taken on CRAN.
 
 ## Installation
 
@@ -37,14 +37,41 @@ remotes::install_gitlab("tweejes/canmap", host = "gitlab.statcan.ca")
 
 
 ```{r example}
+
+library(tidyverse)
 library(canmap)
 
-tibble::as_tibble(shapefile_paths)
+default_shp <- shapefile_paths %>%
+  filter(
+    geo_code == "pr_" &
+    file_type == "digital boundary file" &
+    format == "ArcGIS (.shp)" &
+    language == "english"  &
+    ref_date == 2016 &
+    projection == "projection in Lambert conformal conic"
+  )
+
+default_shp
 
 # then pick a shapefile and get the link:
-(url <- shapefile_paths[1, ]$path)
+(url <- default_shp[1, ]$path)
 
 # then you can download it yourself, or use download_geography(url)
+
+(shp_path <- download_geography(url))
+
+(provinces <- sf::read_sf(shp_path))
+```
+
+Then input into ggplot + sf:
+
+``` {r fig.retina = 2}
+ggplot() +
+  geom_sf(data = provinces) +
+  labs(title = "Provinces & Territories / Digital Boundary File", 
+       x = "Longitude", y = "Latitude",
+       caption = paste0("Source:\n", url))
+
 ```
 
 
@@ -84,14 +111,7 @@ dplyr::filter(code_book, code_type == "geo_level")
 
 Business data usually isn't released below the economic region level (```er_```), while census data can go down to census tract (```ct_```), dissemination area (```da_```) or dissemination block (```db_```). 
 
-These are english codes, while the french codes are also in the dataset---english and french maps are in different files, so they have different codes: ```lpr_000a16a_e.zip``` has the english province/territory maps and ```lpr_000a16a_f.zip``` has the french province/territory maps. The only difference, AFAIK, is that the guide and geography names are in french in the french version.
-
-
-## Download and extract shapefiles to ```./geography/```
-
-``` {r eval = FALSE}
-download_geography(url)
-```
+English and french maps are in different files, so they have different codes: ```lpr_000a16a_e.zip``` has the english province/territory maps and ```lpr_000a16a_f.zip``` has the french province/territory maps. The only difference, AFAIK, is that the guide and geography names are in french in the french version.
 
 
 ## Notes
