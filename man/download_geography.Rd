@@ -4,12 +4,15 @@
 \alias{download_geography}
 \title{Download and unzip Canadian shapefiles}
 \usage{
-download_geography(geo_path, geo_dir = NULL)
+download_geography(geo_path, geo_dir = NULL, overwrite = FALSE)
 }
 \arguments{
 \item{geo_path}{Full path/url to zipped shapefile}
 
 \item{geo_dir}{Directory to download to --- may not keep this.}
+
+\item{overwrite}{Download and unzip even if geography
+already exists in \code{geo_dir}}
 }
 \value{
 A tibble of shapefiles along with metadata, including

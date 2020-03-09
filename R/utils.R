@@ -4,7 +4,8 @@
 #'
 #' @param geo_path Full path/url to zipped shapefile
 #' @param geo_dir Directory to download to --- may not keep this.
-#'
+#' @param overwrite Download and unzip even if geography
+#' already exists in \code{geo_dir}
 #'
 #' @export
 #'
@@ -19,7 +20,7 @@
 #' download_geography("http://www12.statcan.gc.ca/census-recensement/2011/
 #' geo/bound-limit/files-fichiers/2016/lpr_000a16a_e.zip")
 #' }
-download_geography <- function(geo_path, geo_dir = NULL) {
+download_geography <- function(geo_path, geo_dir = NULL, overwrite = FALSE) {
 
   file_name <- fs::path_file(geo_path)
   geo_folder_name <-  fs::path_ext_remove(file_name)
@@ -28,7 +29,18 @@ download_geography <- function(geo_path, geo_dir = NULL) {
     geo_dir <- here::here("geography", geo_folder_name)
   }
 
-  if (str_sub(geo_path, 1, 4) == "http") {
+  # check if the file already exists in the specified directory?
+  if (fs::file_exists(stringr::str_c(geo_dir, "/", geo_folder_name, ".shp")) & !overwrite) {
+    # if so, return the path to the shapefile without downloading,
+    # copying or unzipping anything
+    # currently returns different than if you unzip something with more
+    # than one .shp file, like the ecumene geography
+    message(file_name, " already downloaded, returning filepath to unzipped shapefile.")
+    return(stringr::str_c(geo_dir, "/", geo_folder_name, ".shp"))
+  }
+
+
+  if (stringr::str_sub(geo_path, 1, 4) == "http") {
     # the path is a url pointing to statcan.gc.ca
     temp <- tempfile()
     utils::download.file(geo_path, temp)
