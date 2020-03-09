@@ -53,6 +53,7 @@ default_shp
 
 # then you can download it yourself, or use download_geography(url)
 shp_path <- download_geography(url)
+#> lpr_000a16a_e.zip already downloaded, returning filepath to unzipped .shp.
 
 # and use sf to read the shapefile.
 provinces <- sf::read_sf(shp_path)
@@ -65,6 +66,7 @@ library(ggplot2)
 
 ggplot() +
   geom_sf(data = provinces) +
+  theme_minimal() +
   labs(title = "Provinces & Territories / Digital Boundary File", 
        x = "Longitude", y = "Latitude",
        caption = paste0(".zip source name: ", default_shp$filepath, ".zip"))
@@ -160,16 +162,16 @@ There are some other great packages to make Canadian maps\!
 
   - [cancensus](https://github.com/mountainMath/cancensus) (R package
     available from CRAN + github)
-  - [censusmapper.ca](censusmapper.ca) (from the same ppl as ^, but a
-    website)
-  - [rcanvec](https://github.com/paleolimbot/rcanvec) (V cool NTS maps,
-    good for small scales)
+  - [censusmapper.ca](https://censusmapper.ca) (from the same ppl as ^,
+    but a website)
+  - [rcanvec](https://github.com/paleolimbot/rcanvec) (R package to get
+    v cool NTS maps, good for small scales)
 
 And others probably\!
 [openstreetmap](https://cran.r-project.org/web/packages/OpenStreetMap/index.html)
 and [osmdata](https://github.com/ropensci/osmdata) and
 [leaflet](https://cran.r-project.org/web/packages/leaflet/index.html)
-are both useful as well.
+are all useful as well.
 
 Please note that the ‘canmap’ project is released with a [Contributor
 Code of Conduct](.github/CODE_OF_CONDUCT.md). By contributing to this
