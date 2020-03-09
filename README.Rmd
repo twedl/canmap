@@ -21,10 +21,16 @@ knitr::opts_chunk$set(
 
 ## Installation
 
-You can install the development version of ```canmap``` with:
+You can install the external development version of ```canmap``` with:
 
 ``` r
 remotes::install_github("tweed1e/canmap")
+```
+
+And you can install the internal development version of ```canmap``` with:
+
+``` r
+remotes::install_gitlab("tweejes/canmap", host = "gitlab.statcan.ca)
 ```
 
 ## Example

@@ -13,10 +13,16 @@ you’d like.
 
 ## Installation
 
-You can install the development version of `canmap` with:
+You can install the external development version of `canmap` with:
 
 ``` r
 remotes::install_github("tweed1e/canmap")
+```
+
+And you can install the internal development version of `canmap` with:
+
+``` r
+remotes::install_gitlab("tweejes/canmap", host = "gitlab.statcan.ca)
 ```
 
 ## Example
@@ -65,20 +71,19 @@ A list of useful links to clean up later:
 Suppose you’ve downloaded the geography file `lpr_000a16a_e.zip`. The
 filename defines the important geographic characteristics of the file
 (you can process using the `code_pos` dataset for code positions, or
-`get_geoinfo`).
+`geo_info`).
 
 ``` r
-str(get_geoinfo("lpr_000a16a_e"))
-#> Classes 'tbl_df', 'tbl' and 'data.frame':    1 obs. of  9 variables:
-#>  $ filename    : chr "lpr_000a16a_e"
-#>  $ ref_date    : chr "2016"
-#>  $ geo_code    : chr "pr_"
-#>  $ geo_level   : chr "province and territory"
-#>  $ file_type   : chr "digital boundary file"
-#>  $ format      : chr "ArcGIS (.shp)"
-#>  $ projection  : chr "projection in Lambert conformal conic"
-#>  $ geo_coverage: chr "canada"
-#>  $ language    : chr "english"
+str(geo_info("lpr_000a16a_e"))
+#> Classes 'tbl_df', 'tbl' and 'data.frame':    1 obs. of  8 variables:
+#>  $ filename  : chr "lpr_000a16a_e"
+#>  $ ref_date  : chr "2016"
+#>  $ geo_code  : chr "pr_"
+#>  $ geo_level : chr "province and territory"
+#>  $ file_type : chr "digital boundary file"
+#>  $ format    : chr "ArcGIS (.shp)"
+#>  $ projection: chr "projection in Lambert conformal conic"
+#>  $ language  : chr "english"
 ```
 
 And each of these codes has a meaning that can be found (sometimes) in
@@ -134,7 +139,7 @@ french in the french version.
 ## Download and extract shapefiles to `./geography/`
 
 ``` r
-download_geography("lpr_000a16a_e")
+download_geography(url)
 ```
 
 ## Notes
