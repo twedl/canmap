@@ -55,10 +55,10 @@ A list of useful links to clean up later:
 
 ### Parsing the filename for metadata
 
-Suppose you've downloaded the geography file ```lpr_000a16a_e.zip```. The filename defines the important geographic characteristics of the file (you can process using the ```code_pos``` dataset for code positions, or ```get_geoinfo```).
+Suppose you've downloaded the geography file ```lpr_000a16a_e.zip```. The filename defines the important geographic characteristics of the file (you can process using the ```code_pos``` dataset for code positions, or ```geo_info```).
 
 ```{r codes, warning = FALSE, message = FALSE}
-str(geoinfo("lpr_000a16a_e"))
+str(geo_info("lpr_000a16a_e"))
 ```
 
 And each of these codes has a meaning that can be found (sometimes) in the geography guide that accompanies a downloaded file (but you can't find out the details until *after* you've downloaded it, and is missing some information).

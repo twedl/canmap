@@ -1,8 +1,3 @@
-## Utility functions for Canadian geographic shapefiles and filenames
-
-
-
-
 #' Download and unzip Canadian shapefiles
 #'
 #' Download and unzip Canadian shapefiles from Statistics Canada
@@ -33,13 +28,17 @@ download_geography <- function(geo_path, geo_dir = NULL) {
     geo_dir <- here::here("geography", geo_folder_name)
   }
 
-  temp <- tempfile()
+  if (str_sub(geo_path, 1, 4) == "http") {
+    # the path is a url pointing to statcan.gc.ca
+    temp <- tempfile()
+    utils::download.file(geo_path, temp)
+    unzipped_files <- utils::unzip(temp, exdir = geo_dir)
+    unlink(temp)
 
-  utils::download.file(geo_path, temp)
-
-  unzipped_files <- utils::unzip(temp, exdir = geo_dir)
-
-  unlink(temp)
+  } else {
+    # this assumes the path goes directly to a local/server folder
+    unzipped_files <- utils::unzip(geo_path, exdir = geo_dir)
+  }
 
   shp_path <- stringr::str_subset(unzipped_files, pattern = ".shp")
 
@@ -61,9 +60,9 @@ download_geography <- function(geo_path, geo_dir = NULL) {
 #'
 #' @examples
 #' \donttest{
-#' geoinfo("lpr_000a16a_e")
+#' geo_info("lpr_000a16a_e")
 #' }
-geoinfo <- function(filename) {
+geo_info <- function(filename) {
 
   extract_codes <- canmap::code_pos
 
