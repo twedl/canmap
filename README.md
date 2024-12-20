@@ -17,7 +17,7 @@ Except mapcan was already taken on CRAN.
 You can install the external development version of `canmap` with:
 
 ``` r
-remotes::install_github("tweed1e/canmap")
+remotes::install_github("twedl/canmap")
 ```
 
 And you can install the internal development version of `canmap` with:
